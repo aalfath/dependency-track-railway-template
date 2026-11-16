@@ -7,6 +7,14 @@
 # So the default password is never reachable over the network.
 set -eu
 
+DATA_DIR="${DT_DATA_DIRECTORY:-/data}"
+if [ "$(id -u)" = 0 ]; then
+  # Railway mounts volumes owned by root: hand the data directory to the upstream user, then drop root.
+  mkdir -p "$DATA_DIR"
+  find "$DATA_DIR" ! -user 1000 -exec chown 1000:0 {} + 2>/dev/null || true
+  exec su-exec 1000:0 "$0" "$@"
+fi
+
 PORT="${PORT:-8080}"
 INTERNAL_PORT="${DT_INTERNAL_PORT:-8081}"
 ADMIN_USER=admin
@@ -30,7 +38,6 @@ if [ -z "${DT_DATASOURCE_URL:-}" ]; then
   export DT_DATASOURCE_PASSWORD="${DT_DATASOURCE_PASSWORD:-${PGPASSWORD:-}}"
 fi
 
-mkdir -p "${DT_DATA_DIRECTORY:-/data}"
 
 # The JVM sizes its heap from the host's memory on Railway: cap it (JAVA_HEAP, default 2g).
 EXTRA_JAVA_OPTIONS="${EXTRA_JAVA_OPTIONS:-} -Xmx${JAVA_HEAP:-2g}"
