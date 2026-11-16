@@ -1,0 +1,13 @@
+#!/bin/sh
+# Sourced by the nginx entrypoint before the templates are rendered.
+# API_UPSTREAM: where the API server is reachable (host:port), e.g. ${{API Server.RAILWAY_PRIVATE_DOMAIN}}:8080.
+export PORT="${PORT:-8080}"
+export API_UPSTREAM="${API_UPSTREAM:-apiserver:8080}"
+# Resolve the API host at request time, so the frontend starts even before the API server exists.
+ns=$(awk '/^nameserver/{print $2; exit}' /etc/resolv.conf)
+case "$ns" in
+  *:*) ns="[$ns]" ;;
+  "") ns="127.0.0.11" ;;
+esac
+export NGINX_RESOLVER="$ns"
+echo "05-railway.envsh: info: API upstream ${API_UPSTREAM}, resolver ${NGINX_RESOLVER}, port ${PORT}"
