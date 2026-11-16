@@ -1,3 +1,5 @@
+[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/new/template/dependency-track-1?utm_medium=integration&utm_source=button&utm_campaign=dependency-track)
+
 # Dependency-Track on Railway
 
 Railway template for [OWASP Dependency-Track](https://dependencytrack.org/), the SBOM-based platform for tracking component risk (vulnerabilities, licences, policy violations) across your software portfolio.
