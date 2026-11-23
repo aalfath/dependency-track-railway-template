@@ -1,6 +1,6 @@
 # Dependency-Track API server for Railway.
 # Upstream image pinned by version and digest. Bump both together (see CHANGELOG.md).
-FROM ghcr.io/dependencytrack/apiserver:5.2.1@sha256:a7ce7a42928c6c03e94e8255e2ee871f5268f55b638a69729cae7afc47ef43b8
+FROM ghcr.io/dependencytrack/apiserver:5.2.2@sha256:cd5bed12ff30fd36980dbee2d6c3b177c37b99c63b60f5a5b15fbca0b31d0f38
 
 USER root
 # socat opens the service port only after the default admin password has been replaced.
